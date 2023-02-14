@@ -1,6 +1,8 @@
 import React from "react";
 import { Box, Card, CardContent, Typography } from "@mui/material";
 
+import ArtistList from './ArtistList'
+
 const songs = [
     {
         title: "First song",
@@ -51,20 +53,17 @@ const bull = (
 
 export default function Tile() {
     const rendered = songs.map((song, id) => {
+        const { title, actualArtist, fakeArtist1, fakeArtist2 } = song;
+
         return (
-            <Card key={id} sx={{ width: 200 }}>
+            <Card key={id} sx={{ width: 250 }}>
                 <CardContent>
-                    <Typography>
-                        {song.title}
-                    </Typography>
-                    <Typography>
-                        {bull}{song.actualArtist}
-                        <br />
-                        {bull}{song.fakeArtist1}
-                        <br />
-                        {bull}{song.fakeArtist2}
-                        <br />
-                    </Typography>
+                    <ArtistList
+                        title={title}
+                        actualArtist={actualArtist}
+                        fakeArtist1={fakeArtist1}
+                        fakeArtist2={fakeArtist2}
+                    />
                 </CardContent>
             </Card>
         
