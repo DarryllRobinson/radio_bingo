@@ -1,7 +1,9 @@
-import React from "react";
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import React, { createContext, useContext, useState } from "react";
+import { Box, Card, CardContent, FormLabel, Typography } from "@mui/material";
 
 import ArtistList from './ArtistList'
+
+const RadioContext = createContext('');
 
 const songs = [
     {
@@ -42,31 +44,28 @@ const songs = [
     }
 ];
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
 export default function Tile() {
+    const [value, setValue] = useState('');
+    const [error, setError] = useState(false);
+    const [helperText, setHelperText] = useState('Choose the artist');
+
     const rendered = songs.map((song, id) => {
         const { title, actualArtist, fakeArtist1, fakeArtist2 } = song;
 
         return (
-            <Card key={id} sx={{ width: 250 }}>
-                <CardContent>
-                    <ArtistList
-                        title={title}
-                        actualArtist={actualArtist}
-                        fakeArtist1={fakeArtist1}
-                        fakeArtist2={fakeArtist2}
-                    />
-                </CardContent>
-            </Card>
-        
+            <RadioContext.Provider value="">
+                <Card key={id} sx={{ width: 250 }}>
+                    <CardContent>
+                        <ArtistList
+                            title={title}
+                            actualArtist={actualArtist}
+                            fakeArtist1={fakeArtist1}
+                            fakeArtist2={fakeArtist2}
+                            setValue={setValue}
+                        />
+                    </CardContent>
+                </Card>
+            </RadioContext.Provider>
     )
 });
 
