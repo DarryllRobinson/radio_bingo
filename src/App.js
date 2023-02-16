@@ -15,6 +15,8 @@ import SignIn from './components/navigation/SignIn';
 import SignUp from './components/navigation/SignUp';
 import Footer from './components/navigation/Footer';
 import ScrollToTop from './components/navigation/ScrollToTop';
+import Board from './components/Play/Board';
+import Tile from './components/Play/Tile';
 // use after user service is set up
 //import PrivateRoute from './components/navigation/PrivateRoute'
 
@@ -41,7 +43,11 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={SignUp} />
-            <Navbar />
+            <>
+              <Navbar />
+              <Route exact path="/board" component={Board} />
+              <Route exact path="/tile" component={Tile} />
+            </>
           </Switch>
           <Footer />
         </Router>
