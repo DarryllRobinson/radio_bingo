@@ -9,11 +9,9 @@ import { Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Router history={history}>
-      <App />
-    </Router>
-  </React.StrictMode>
+  <Router history={history}>
+    <App />
+  </Router>
 );
 
 // attempt silent token refresh before startup

@@ -58,6 +58,7 @@ function App() {
               <PrivateRoute exact path="/board" component={Board} />
               <Route exact path="/tile" component={Tile} />
             </>
+            <Redirect from="*" to="/" />
           </Switch>
           <Footer />
         </Router>
