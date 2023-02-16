@@ -8,78 +8,201 @@ import { Box, Card, CardContent, Grid } from '@mui/material';
 
 // Mocked data
 const numTiles = 4;
+const numArtists = 2;
 
 const songsDb = [
   {
     id: 0,
     title: 'First song',
-    actualArtist: 'First Actual Artist',
-    fakeArtist1: 'First Fake Artist 1',
-    fakeArtist2: 'First Fake Artist 2',
+    artist: 'First Actual Artist',
   },
   {
     id: 1,
     title: 'Second song',
-    actualArtist: 'Second Actual Artist',
-    fakeArtist1: 'Second Fake Artist 1',
-    fakeArtist2: 'Second Fake Artist 2',
+    artist: 'Second Actual Artist',
   },
   {
     id: 2,
     title: 'Third song',
-    actualArtist: 'Third Actual Artist',
-    fakeArtist1: 'Third Fake Artist 1',
-    fakeArtist2: 'Third Fake Artist 2',
+    artist: 'Third Actual Artist',
   },
   {
     id: 3,
     title: 'Fourth song',
-    actualArtist: 'Fourth Actual Artist',
-    fakeArtist1: 'Fourth Fake Artist 1',
-    fakeArtist2: 'Fourth Fake Artist 2',
+    artist: 'Fourth Actual Artist',
   },
   {
     id: 4,
     title: 'Fifth song',
     actualArtist: 'Five Actual Artist',
-    fakeArtist1: 'Five Fake Artist 1',
-    fakeArtist2: 'Five Fake Artist 2',
   },
   {
     id: 5,
     title: 'Sixth song',
-    actualArtist: 'Sixth Actual Artist',
-    fakeArtist1: 'Sixth Fake Artist 1',
-    fakeArtist2: 'Sixth Fake Artist 2',
+    artist: 'Sixth Actual Artist',
+  },
+];
+
+const fakeArtistsDb = [
+  {
+    id: 0,
+    artist: 'Fake Artist 0',
+  },
+  {
+    id: 1,
+    artist: 'Fake Artist 1',
+  },
+  {
+    id: 2,
+    artist: 'Fake Artist 2',
+  },
+  {
+    id: 3,
+    artist: 'Fake Artist 3',
+  },
+  {
+    id: 4,
+    artist: 'Fake Artist 4',
+  },
+  {
+    id: 5,
+    artist: 'Fake Artist 5',
+  },
+  {
+    id: 6,
+    artist: 'Fake Artist 6',
+  },
+  {
+    id: 7,
+    artist: 'Fake Artist 7',
+  },
+  {
+    id: 8,
+    artist: 'Fake Artist 8',
+  },
+  {
+    id: 9,
+    artist: 'Fake Artist 9',
+  },
+  {
+    id: 10,
+    artist: 'Fake Artist 10',
+  },
+  {
+    id: 11,
+    artist: 'Fake Artist 11',
+  },
+  {
+    id: 12,
+    artist: 'Fake Artist 12',
+  },
+  {
+    id: 13,
+    artist: 'Fake Artist 13',
+  },
+  {
+    id: 14,
+    artist: 'Fake Artist 14',
+  },
+  {
+    id: 15,
+    artist: 'Fake Artist 15',
+  },
+  {
+    id: 16,
+    artist: 'Fake Artist 16',
+  },
+  {
+    id: 17,
+    artist: 'Fake Artist 17',
+  },
+  {
+    id: 18,
+    artist: 'Fake Artist 18',
+  },
+  {
+    id: 19,
+    artist: 'Fake Artist 19',
   },
 ];
 
 export default function Board() {
   // Need to record which songs have been chosen already
   const [songs, setSongs] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   // Check if new board must be created
   // Assume yes for dev purposes
   useEffect(() => {
     const create = true;
+
     if (create) {
-      console.log('Create');
-      // Fetch randon song title and artist per numTiles
-      // Fetch two fake artists, making sure they're not the same as the artist provided
-      // Save in db
-      // Call <Tile /> and send title, artists
-      let songIds = [];
-      for (let tile = 0; songIds.length < numTiles; tile++) {
-        const songId = getRandomSongId(numTiles);
-        //setSongs([...songs, songId]);
-        console.log('songId: ', songId);
-        const found = songIds.includes(songId);
-        if (!found) songIds.push(songId);
-        console.log(songIds);
-        fetchFakeArtists();
+      const createBoard = () => {
+        // Call <Tile /> and send title, artists
+        // Fetch randon song title and artist per numTiles
+        setSongs(selectRandomSongs());
+
+        // Fetch two fake artists, making sure they're not the same as the artist provided
+        setArtists(fetchFakeArtists());
+
+        // Save in db
         saveTile();
-      }
+      };
+
+      const selectRandomSongs = () => {
+        let songIds = [];
+        for (let tile = 0; songIds.length < numTiles; tile++) {
+          const songId = getRandomId(numTiles);
+          const found = songIds.includes(songId);
+          if (!found) {
+            // Insert song object into state
+            songIds.push(findArrayElementById(songsDb, songId));
+          }
+        }
+        return songIds;
+      };
+
+      const getRandomId = (max) => {
+        return Math.floor(Math.random() * max);
+      };
+
+      const findArrayElementById = (array, id) => {
+        return array.find((element) => {
+          return element.id === id;
+        });
+      };
+
+      const findArrayElementByTitle = (array, title) => {
+        return array.find((element) => {
+          return element.title === title;
+        });
+      };
+
+      const fetchFakeArtists = () => {
+        console.log('fetchFakeArtists');
+        let artistIds = [];
+        for (let artist = 0; artistIds.length; artist++) {
+          const artistId = getRandomId(numArtists);
+          const found = artistIds.includes(artistId);
+          if (!found) {
+            // Insert artist object into state
+            artistIds.push(findArrayElementById(fakeArtistsDb, artistId));
+          }
+        }
+      };
+
+      const saveTile = () => {
+        console.log('saveTile');
+      };
+
+      createBoard();
+      fetchFakeArtists();
+      saveTile();
     } else {
+      const retrieveBoard = () => {
+        console.log('Retrieve');
+      };
+
       retrieveBoard();
     }
   }, []);
@@ -95,22 +218,6 @@ export default function Board() {
       </Grid>
     );
   });
-
-  const retrieveBoard = () => {
-    console.log('Retrieve');
-  };
-
-  const getRandomSongId = (max) => {
-    return Math.floor(Math.random() * max);
-  };
-
-  const fetchFakeArtists = () => {
-    console.log('fetchFakeArtists');
-  };
-
-  const saveTile = () => {
-    console.log('saveTile');
-  };
 
   return (
     <Box sx={{ border: 1, flexGrow: 1 }}>
