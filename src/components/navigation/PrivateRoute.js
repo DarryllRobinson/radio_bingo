@@ -1,14 +1,17 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { userService } from '@/_services';
+//import { userService } from '@/_services';
+
+const user = { firstName: 'Darryll', role: 'Admin' };
 
 function PrivateRoute({ component: Component, roles, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => {
-        const user = userService.userValue;
+        // const user = userService.userValue;
+
         if (!user) {
           // not logged in so redirect to login page with the return url
           return (

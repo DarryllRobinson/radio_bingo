@@ -10,17 +10,27 @@ import { Container, CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Home from './components/Home';
+
+// Navigation components
 import Navbar from './components/navigation/Navbar';
 import SignIn from './components/navigation/SignIn';
 import SignUp from './components/navigation/SignUp';
 import Footer from './components/navigation/Footer';
 import ScrollToTop from './components/navigation/ScrollToTop';
+import { PrivateRoute } from './components/navigation/PrivateRoute';
+
+// Play components
 import Board from './components/Play/Board';
 import Tile from './components/Play/Tile';
 // use after user service is set up
 //import PrivateRoute from './components/navigation/PrivateRoute'
 
 const theme = createTheme();
+
+// Index.js has checked user is logged in with
+// a silent token refresh
+// Buttons and the rest of the display to be determined
+// based on sign-in status
 
 function App() {
   const { pathname } = useLocation();
@@ -45,7 +55,7 @@ function App() {
             <Route exact path="/signup" component={SignUp} />
             <>
               <Navbar />
-              <Route exact path="/board" component={Board} />
+              <PrivateRoute exact path="/board" component={Board} />
               <Route exact path="/tile" component={Tile} />
             </>
           </Switch>
