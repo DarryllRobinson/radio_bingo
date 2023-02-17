@@ -34,7 +34,7 @@ const songsDb = [
   {
     id: 4,
     title: 'Fifth song',
-    actualArtist: 'Five Actual Artist',
+    artist: 'Five Actual Artist',
   },
   {
     id: 5,
@@ -147,7 +147,7 @@ export default function Board() {
       };
 
       const selectRandomSongs = () => {
-        let songList = [];
+        let tiles = [];
         let songIds = [];
         for (let tile = 0; songIds.length < numTiles; tile++) {
           const songId = getRandomId(songsDb.length);
@@ -157,16 +157,26 @@ export default function Board() {
             const { artist } = findArrayElementById(songsDb, songId);
             //console.log('actual artist: ', artist);
             //setArtists(fetchFakeArtists(artist));
-            const artists = fetchFakeArtists(artist);
-            console.log('artists: ', artists);
+            let artists = fetchFakeArtists(artist);
+            artists.push(artist);
+            //console.log('artists: ', artists);
+            artists = artists.sort(() => Math.random() - 0.5);
+            //console.log('artists shuffled: ', artists);
 
             // Insert song object, songId into arrays
             songIds.push(songId);
-            songList.push(findArrayElementById(songsDb, songId));
+            const { title } = findArrayElementById(songsDb, songId);
+            //console.log('title: ', title, artist);
+
+            tiles.push({
+              title,
+              artists,
+            });
+            //console.log('tiles: ', tiles);
           }
         }
-        console.log('songList: ', songList);
-        return songList;
+        console.log('tiles: ', tiles);
+        return tiles;
       };
 
       const getRandomId = (max) => {
@@ -176,12 +186,6 @@ export default function Board() {
       const findArrayElementById = (array, id) => {
         return array.find((element) => {
           return element.id === id;
-        });
-      };
-
-      const findArrayElementByTitle = (array, title) => {
-        return array.find((element) => {
-          return element.title === title;
         });
       };
 
@@ -206,7 +210,8 @@ export default function Board() {
               //console.log('no match');
 
               // Insert artist object, artistId into arrays
-              artistList.push(findArrayElementById(fakeArtistsDb, artistId));
+              //artistList.push(findArrayElementById(fakeArtistsDb, artistId));
+              artistList.push(artist);
               artistIds.push(artistId);
               //console.log('artistList: ', artistList);
             }
