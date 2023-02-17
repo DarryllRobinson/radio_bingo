@@ -142,24 +142,31 @@ export default function Board() {
         // Fetch randon song title and artist per numTiles
         setSongs(selectRandomSongs());
 
-        // Fetch two fake artists, making sure they're not the same as the artist provided
-        setArtists(fetchFakeArtists());
-
         // Save in db
         saveTile();
       };
 
       const selectRandomSongs = () => {
+        let songList = [];
         let songIds = [];
         for (let tile = 0; songIds.length < numTiles; tile++) {
-          const songId = getRandomId(numTiles);
+          const songId = getRandomId(songsDb.length);
           const found = songIds.includes(songId);
           if (!found) {
-            // Insert song object into state
-            songIds.push(findArrayElementById(songsDb, songId));
+            // Fetch two fake artists, making sure they're not the same as the artist provided
+            const { artist } = findArrayElementById(songsDb, songId);
+            //console.log('actual artist: ', artist);
+            //setArtists(fetchFakeArtists(artist));
+            const artists = fetchFakeArtists(artist);
+            console.log('artists: ', artists);
+
+            // Insert song object, songId into arrays
+            songIds.push(songId);
+            songList.push(findArrayElementById(songsDb, songId));
           }
         }
-        return songIds;
+        console.log('songList: ', songList);
+        return songList;
       };
 
       const getRandomId = (max) => {
@@ -178,17 +185,34 @@ export default function Board() {
         });
       };
 
-      const fetchFakeArtists = () => {
-        console.log('fetchFakeArtists');
+      const fetchFakeArtists = (actualArtist) => {
+        //console.log('fetchFakeArtists');
+        let artistList = [];
         let artistIds = [];
-        for (let artist = 0; artistIds.length; artist++) {
-          const artistId = getRandomId(numArtists);
+        for (let artistLoop = 0; artistIds.length < numArtists; artistLoop++) {
+          const artistId = getRandomId(fakeArtistsDb.length);
+          //console.log('artistId: ', artistId);
+          //console.log('artistList: ', artistList);
+
+          // Check to make sure the artist hasn't already been chosen for this tile - small chance but definitely non-zero
           const found = artistIds.includes(artistId);
+          //console.log('found: ', found);
+
           if (!found) {
-            // Insert artist object into state
-            artistIds.push(findArrayElementById(fakeArtistsDb, artistId));
+            // Now check to make sure the artist hasn't the same as the actual artist - again, small chance but definitely non-zero
+            const { artist } = findArrayElementById(fakeArtistsDb, artistId);
+            //console.log('artist: ', artist);
+            if (artist !== actualArtist) {
+              //console.log('no match');
+
+              // Insert artist object, artistId into arrays
+              artistList.push(findArrayElementById(fakeArtistsDb, artistId));
+              artistIds.push(artistId);
+              //console.log('artistList: ', artistList);
+            }
           }
         }
+        return artistList;
       };
 
       const saveTile = () => {
