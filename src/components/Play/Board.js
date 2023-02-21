@@ -348,7 +348,7 @@ export default function Board() {
 
   return (
     <Grid
-      sx={{ border: '5px solid red' }}
+      sx={{ border: 2, borderRadius: 3, boxShadow: 5 }}
       columns={{ xs: 4, sm: 8, md: 12 }}
       container
       justify="center"

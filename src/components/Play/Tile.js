@@ -11,18 +11,23 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  Typography,
 } from '@mui/material';
-import { CancelSharp } from '@mui/icons-material/';
+import {
+  CheckCircleOutlineSharp,
+  DangerousOutlined,
+} from '@mui/icons-material/';
 
 import './Tile.css';
 
 export default function Tile(props) {
-  const { title, artists } = props;
+  const { title, actualArtist, artists } = props;
   const [flipped, setFlipped] = useState(false);
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
   const [helperText, setHelperText] = useState("Who's singing?");
   const [submitted, setSubmitted] = useState(false);
+  const [correct, setCorrect] = useState(false);
 
   const handleClick = () => {
     setFlipped(!flipped);
@@ -30,7 +35,7 @@ export default function Tile(props) {
 
   const handleChange = (event) => {
     setValue(event.target.value);
-    setHelperText('');
+    setHelperText('Lock it in!');
     setError(false);
   };
 
@@ -41,12 +46,42 @@ export default function Tile(props) {
       setHelperText('Please choose an artist');
       setError(true);
     } else {
-      setHelperText('');
+      setHelperText('Lock it in!');
       setError(false);
 
       setSubmitted(true);
+      checkArtist();
       handleClick();
     }
+  };
+
+  const displayChosenArtist = () => {
+    if (value === '') {
+      return;
+    } else if (correct) {
+      return (
+        <Box sx={{ height: 250, width: 200 }}>
+          <Box>{value}</Box>
+          <Box>
+            <CheckCircleOutlineSharp color="success" fontSize="large" />
+          </Box>
+        </Box>
+      );
+    } else {
+      return (
+        <Box sx={{ height: 250, width: 200 }}>
+          <Box>{value}</Box>
+          <Box>
+            <DangerousOutlined color="error" fontSize="large" />
+          </Box>
+        </Box>
+      );
+    }
+  };
+
+  const checkArtist = () => {
+    const check = value === actualArtist ? true : false;
+    setCorrect(check);
   };
 
   const renderArtists = artists.map((artist, id) => {
@@ -55,6 +90,7 @@ export default function Tile(props) {
         key={id}
         value={artist}
         control={<Radio size="small" />}
+        disabled={submitted}
         label={artist}
         onChange={handleChange}
         size="small"
@@ -69,27 +105,33 @@ export default function Tile(props) {
           <div className="front" onClick={handleClick}>
             <Card
               sx={{
+                backgroundColor: '#f0f4fa',
+                '&:hover': {
+                  backgroundColor: '#f0f4fa',
+                  opacity: [0.9, 0.8, 0.7],
+                },
                 border: 1,
                 borderRadius: 3,
-                fontWeight: 'bold',
-                fontSize: 14,
                 height: 250,
                 width: 200,
               }}
             >
               <CardContent>
-                {title}
-                {submitted && <CancelSharp fontSize="large" />}
+                <Typography variant="h6" gutterBottom>
+                  {title}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  {displayChosenArtist()}
+                </Typography>
               </CardContent>
             </Card>
           </div>
           <div className="back">
             <Card
               sx={{
+                backgroundColor: '#f0f4fa',
                 border: 1,
                 borderRadius: 3,
-                fontWeight: 'bold',
-                fontSize: 14,
                 height: 250,
                 width: 200,
               }}
@@ -103,7 +145,7 @@ export default function Tile(props) {
                   >
                     {renderArtists}
                   </RadioGroup>
-                  <FormHelperText>{helperText}</FormHelperText>
+                  {!submitted && <FormHelperText>{helperText}</FormHelperText>}
                 </FormControl>
               </CardContent>
               <CardActions>
