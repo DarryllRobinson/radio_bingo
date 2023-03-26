@@ -17,10 +17,12 @@ import {
   CheckCircleOutlineSharp,
   DangerousOutlined,
 } from '@mui/icons-material/';
+import { useTheme } from '@mui/material/styles';
 
 import './Tile.css';
 
 export default function Tile(props) {
+  const theme = useTheme();
   const { title, actualArtist, artists } = props;
   const [flipped, setFlipped] = useState(false);
   const [value, setValue] = useState('');
@@ -105,10 +107,8 @@ export default function Tile(props) {
           <div className="front" onClick={handleClick}>
             <Card
               sx={{
-                backgroundColor: '#f0f4fa',
                 '&:hover': {
-                  backgroundColor: '#f0f4fa',
-                  opacity: [0.9, 0.8, 0.7],
+                  boxShadow: 10,
                 },
                 border: 1,
                 borderRadius: 3,
@@ -129,7 +129,6 @@ export default function Tile(props) {
           <div className="back">
             <Card
               sx={{
-                backgroundColor: '#f0f4fa',
                 border: 1,
                 borderRadius: 3,
                 height: 250,
